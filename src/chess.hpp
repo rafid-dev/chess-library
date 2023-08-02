@@ -74,7 +74,7 @@ enum Square : uint8_t {
 };
 // clang-format on
 
-enum class MoveGenType : uint8_t { ALL, CAPTURE, QUIET };
+enum class MoveGenType : uint8_t { ALL, CAPTURE, QUIET, NONQUIET };
 
 enum class Direction : int8_t {
     NORTH = 8,
@@ -2331,7 +2331,7 @@ void generatePawnMoves(const Board &board, Movelist &moves, Bitboard pin_d, Bitb
                             (shift<UP>(single_push_pinned & DOUBLE_PUSH_RANK) & ~board.occ())) &
                            checkmask;
 
-    if (mt != MoveGenType::QUIET && (pawns & RANK_B_PROMO)) {
+    if ((mt != MoveGenType::QUIET || mt != MoveGenType::CAPTURE) && (pawns & RANK_B_PROMO)) {
         Bitboard promo_left = l_pawns & RANK_PROMO;
         Bitboard promo_right = r_pawns & RANK_PROMO;
         Bitboard promo_push = single_push & RANK_PROMO;
